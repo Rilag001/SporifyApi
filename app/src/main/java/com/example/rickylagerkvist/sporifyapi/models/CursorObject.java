@@ -6,4 +6,12 @@ package com.example.rickylagerkvist.sporifyapi.models;
 
 public class CursorObject {
     public String after;
+
+    public String getAfter() {
+        return after;
+    }
+
+    public void setAfter(String after) {
+        this.after = after;
+    }
 }

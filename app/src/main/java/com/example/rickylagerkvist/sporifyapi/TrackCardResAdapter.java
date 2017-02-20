@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.rickylagerkvist.sporifyapi.models.TrackObject;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -71,8 +72,12 @@ public class TrackCardResAdapter extends RecyclerView.Adapter<TrackCardResAdapte
             @Override
             public void onClick(View v) {
 
+                // put model as String extra
+                Gson gson = new Gson();
+                String trackObjectJson = gson.toJson(trackObject);
+
                 Bundle bundle = new Bundle();
-                bundle.putString("url", trackObject.album.images.get(0).url); // Put anything what you want
+                bundle.putString("track", trackObjectJson); // Put anything what you want
 
                 TrackDetailFragment fragment2 = new TrackDetailFragment();
                 fragment2.setArguments(bundle);

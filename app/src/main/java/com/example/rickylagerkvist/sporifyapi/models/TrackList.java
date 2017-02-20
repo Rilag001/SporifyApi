@@ -7,4 +7,12 @@ package com.example.rickylagerkvist.sporifyapi.models;
 public class TrackList {
 
     public TracksObject tracks;
+
+    public TracksObject getTracks() {
+        return tracks;
+    }
+
+    public void setTracks(TracksObject tracks) {
+        this.tracks = tracks;
+    }
 }

@@ -4,6 +4,7 @@ package com.example.rickylagerkvist.sporifyapi;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -19,6 +20,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -50,10 +52,12 @@ public class SearchTrackListFragment extends Fragment {
     Button mSearchButton;
     RelativeLayout mMainLayout;
     RecyclerView mRecyclerView;
+    LinearLayout mNoTrackFoundLayout;
 
     // list
     ArrayList<TrackObject> mTrackObjects = new ArrayList<>();
     TrackCardResAdapter mTrackResCardAdapter;
+
 
     public SearchTrackListFragment() {
         // Required empty public constructor
@@ -71,6 +75,7 @@ public class SearchTrackListFragment extends Fragment {
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.trackRecyclerView);
         mSearchButton = (Button) rootView.findViewById(R.id.searchButton);
         mMainLayout = (RelativeLayout) rootView.findViewById(R.id.activity_main);
+        mNoTrackFoundLayout = (LinearLayout) rootView.findViewById(R.id.no_internet_layout);
 
         // RecyclerAdapter
         mTrackResCardAdapter = new TrackCardResAdapter(mTrackObjects, getContext());
@@ -101,6 +106,7 @@ public class SearchTrackListFragment extends Fragment {
 
         return rootView;
     }
+
 
     public void searchTracks()  {
 
@@ -134,6 +140,13 @@ public class SearchTrackListFragment extends Fragment {
 
                 mTrackObjects = tacksList.tracks.items;
                 mTrackResCardAdapter.update(mTrackObjects);
+
+                // if list is empty show mNoTrackFoundLayout
+                if(mTrackObjects.isEmpty()){
+                    mNoTrackFoundLayout.setVisibility(View.VISIBLE);
+                } else {
+                    mNoTrackFoundLayout.setVisibility(View.GONE);
+                }
             }
 
             @Override
