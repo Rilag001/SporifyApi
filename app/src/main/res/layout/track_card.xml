@@ -1,52 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/track_layout"
-    android:padding="8dp"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <ImageView
-        android:layout_width="65dp"
-        android:layout_height="65dp"
-        android:id="@+id/track_card_imageView"/>
+    <data>
+        <variable
+            name="listItem"
+            type="com.example.rickylagerkvist.sporifyapi.models.TrackObject"/>
+    </data>
 
-    <TextView
-        android:text="TextView"
-        android:layout_toRightOf="@id/track_card_imageView"
-        android:layout_toEndOf="@+id/track_card_imageView"
-        android:layout_marginLeft="10dp"
-        android:layout_marginStart="10dp"
-        android:layout_width="wrap_content"
-        android:maxLines="1"
-        android:textAllCaps="true"
-        android:textStyle="bold"
+    <RelativeLayout
+        android:id="@+id/track_layout"
+        android:padding="8dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/trackTextView"/>
+        android:orientation="horizontal">
 
-    <TextView
-        android:text="TextView"
-        android:maxLines="1"
-        android:layout_toRightOf="@id/track_card_imageView"
-        android:layout_toEndOf="@+id/track_card_imageView"
-        android:layout_below="@id/trackTextView"
-        android:layout_width="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginStart="10dp"
-        android:layout_height="wrap_content"
-        android:id="@+id/albumTextView"/>
+        <ImageView
+            app:image="@{listItem.getSmallCoverArt}"
+            android:layout_width="65dp"
+            android:layout_height="65dp"
+            android:id="@+id/track_card_imageView"/>
 
-    <TextView
-        android:text="TextView"
-        android:maxLines="1"
-        android:layout_toRightOf="@id/track_card_imageView"
-        android:layout_toEndOf="@+id/track_card_imageView"
-        android:layout_below="@id/albumTextView"
-        android:layout_width="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginStart="10dp"
-        android:layout_height="wrap_content"
-        android:id="@+id/artistTextView"/>
+        <TextView
+            android:text="@{listItem.name}"
+            android:layout_toRightOf="@id/track_card_imageView"
+            android:layout_toEndOf="@+id/track_card_imageView"
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_width="wrap_content"
+            android:maxLines="1"
+            android:textAllCaps="true"
+            android:textStyle="bold"
+            android:layout_height="wrap_content"
+            android:id="@+id/trackTextView"/>
 
-</RelativeLayout>
+        <TextView
+            android:maxLines="1"
+            android:text="@{listItem.album.name}"
+            android:layout_toRightOf="@id/track_card_imageView"
+            android:layout_toEndOf="@+id/track_card_imageView"
+            android:layout_below="@id/trackTextView"
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/albumTextView"/>
+
+        <TextView
+            android:maxLines="1"
+            android:text="@{listItem.getJoinTrack}"
+            android:layout_toRightOf="@id/track_card_imageView"
+            android:layout_toEndOf="@+id/track_card_imageView"
+            android:layout_below="@id/albumTextView"
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/artistTextView"/>
+
+    </RelativeLayout>
+
+</layout>
+

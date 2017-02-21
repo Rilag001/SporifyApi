@@ -1,4 +1,4 @@
-package com.example.rickylagerkvist.sporifyapi;
+package com.example.rickylagerkvist.sporifyapi.searchTracks;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
@@ -8,6 +8,8 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.Toast;
+
+import com.example.rickylagerkvist.sporifyapi.R;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -21,7 +23,6 @@ public class MainActivity extends AppCompatActivity {
         FragmentManager manager = getSupportFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();
         transaction.replace(R.id.activity_main, alarmSettingFragment);
-        //transaction.addToBackStack(null);
         transaction.commit();
 
         if (!isDataConnectionAvailable(this)) {

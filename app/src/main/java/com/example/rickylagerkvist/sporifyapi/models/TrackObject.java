@@ -1,5 +1,7 @@
 package com.example.rickylagerkvist.sporifyapi.models;
 
+import android.text.TextUtils;
+
 import java.util.ArrayList;
 
 /**
@@ -151,5 +153,19 @@ public class TrackObject {
 
     public void setUri(String uri) {
         this.uri = uri;
+    }
+
+
+    public String getJoinTrack(){
+        ArrayList<ArtistObjects> list = getArtists();
+        ArrayList<String> nameList = new ArrayList<>();
+        for (ArtistObjects model:list) {
+            nameList.add(model.name);
+        }
+        return TextUtils.join(", ", nameList);
+    }
+
+    public String getSmallCoverArt(){
+        return album.images.get(album.images.size() - 1).getUrl();
     }
 }

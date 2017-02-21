@@ -1,13 +1,12 @@
-package com.example.rickylagerkvist.sporifyapi;
+package com.example.rickylagerkvist.sporifyapi.searchTracks;
 
 
 import android.content.Context;
-import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -17,18 +16,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
+import com.example.rickylagerkvist.sporifyapi.R;
+import com.example.rickylagerkvist.sporifyapi.databinding.FragmentSearchTrackListBinding;
+import com.example.rickylagerkvist.sporifyapi.databinding.FragmentTrackDetailBinding;
 import com.example.rickylagerkvist.sporifyapi.models.TrackList;
 import com.example.rickylagerkvist.sporifyapi.models.TrackObject;
+import com.example.rickylagerkvist.sporifyapi.trackdetails.DetailTrackViewModel;
 import com.example.rickylagerkvist.sporifyapi.utils.APIUrlPaths;
 import com.example.rickylagerkvist.sporifyapi.utils.HttpUtils;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -47,16 +48,17 @@ import cz.msebera.android.httpclient.Header;
  */
 public class SearchTrackListFragment extends Fragment {
 
-    // views
+//    // views
     EditText mSearchEditText;
     Button mSearchButton;
     RelativeLayout mMainLayout;
     RecyclerView mRecyclerView;
     LinearLayout mNoTrackFoundLayout;
+    SwipeRefreshLayout mSwipeRefreshLayout;
 
     // list
     ArrayList<TrackObject> mTrackObjects = new ArrayList<>();
-    TrackCardResAdapter mTrackResCardAdapter;
+    MvvmRecTrackAdapter mTrackResCardAdapter;
 
 
     public SearchTrackListFragment() {
@@ -76,12 +78,21 @@ public class SearchTrackListFragment extends Fragment {
         mSearchButton = (Button) rootView.findViewById(R.id.searchButton);
         mMainLayout = (RelativeLayout) rootView.findViewById(R.id.activity_main);
         mNoTrackFoundLayout = (LinearLayout) rootView.findViewById(R.id.no_internet_layout);
+        mSwipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipeRefreshLayout);
 
         // RecyclerAdapter
-        mTrackResCardAdapter = new TrackCardResAdapter(mTrackObjects, getContext());
+        mTrackResCardAdapter = new MvvmRecTrackAdapter(mTrackObjects, getContext());
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(linearLayoutManager);
         mRecyclerView.setAdapter(mTrackResCardAdapter);
+
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                searchTracks();
+            }
+        });
+
 
         // search track
         mSearchButton.setOnClickListener(new View.OnClickListener() {
@@ -124,6 +135,12 @@ public class SearchTrackListFragment extends Fragment {
             snackbar.show();
         }
 
+        // Load complete
+        onItemsLoadComplete();
+    }
+
+    private void onItemsLoadComplete() {
+        mSwipeRefreshLayout.setRefreshing(false);
     }
 
     public void searchTrack(String searchText) throws JSONException {

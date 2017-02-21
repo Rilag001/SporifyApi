@@ -1,4 +1,4 @@
-package com.example.rickylagerkvist.sporifyapi;
+package com.example.rickylagerkvist.sporifyapi.trackdetails;
 
 import android.content.Context;
 import android.databinding.BaseObservable;
