@@ -1,4 +1,4 @@
-package com.example.rickylagerkvist.sporifyapi.trackdetails;
+package com.example.rickylagerkvist.sporifyapi.mvvmTest.trackdetails;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;

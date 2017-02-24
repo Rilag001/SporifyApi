@@ -2,11 +2,11 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="com.example.rickylagerkvist.sporifyapi.trackdetails.TrackDetailFragment"
+    tools:context=".mvvmTest.trackdetails.TrackDetailFragment"
     xmlns:bind="http://schemas.android.com/apk/res-auto">
 
     <data>
-        <variable name="viewModel" type="com.example.rickylagerkvist.sporifyapi.trackdetails.DetailTrackViewModel"/>
+        <variable name="viewModel" type="com.example.rickylagerkvist.sporifyapi.mvvmTest.trackdetails.DetailTrackViewModel"/>
     </data>
 
     <RelativeLayout

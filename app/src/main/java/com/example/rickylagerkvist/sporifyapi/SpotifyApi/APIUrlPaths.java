@@ -1,4 +1,4 @@
-package com.example.rickylagerkvist.sporifyapi.utils;
+package com.example.rickylagerkvist.sporifyapi.SpotifyApi;
 
 /**
  * Created by Ricky on 2016-11-18.

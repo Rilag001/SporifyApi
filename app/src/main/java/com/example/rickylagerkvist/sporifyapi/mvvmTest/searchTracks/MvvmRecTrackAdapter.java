@@ -1,4 +1,4 @@
-package com.example.rickylagerkvist.sporifyapi.searchTracks;
+package com.example.rickylagerkvist.sporifyapi.mvvmTest.searchTracks;
 
 import android.content.Context;
 import android.databinding.BindingAdapter;
@@ -14,9 +14,9 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.example.rickylagerkvist.sporifyapi.R;
-import com.example.rickylagerkvist.sporifyapi.databinding.TrackCardBinding;
+import com.example.rickylagerkvist.sporifyapi.databinding.TrackConstCardBinding;
 import com.example.rickylagerkvist.sporifyapi.models.TrackObject;
-import com.example.rickylagerkvist.sporifyapi.trackdetails.TrackDetailFragment;
+import com.example.rickylagerkvist.sporifyapi.mvvmTest.trackdetails.TrackDetailFragment;
 import com.google.gson.Gson;
 
 import java.util.List;
@@ -37,9 +37,9 @@ public class MvvmRecTrackAdapter extends RecyclerView.Adapter<MvvmRecTrackAdapte
 
     @Override
     public BindingHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        TrackCardBinding binding = DataBindingUtil.inflate(
+        TrackConstCardBinding binding = DataBindingUtil.inflate(
                 LayoutInflater.from(mContext),
-                R.layout.track_card, parent, false);
+                R.layout.track_const_card, parent, false);
 
         return new BindingHolder(binding);
     }
@@ -48,6 +48,7 @@ public class MvvmRecTrackAdapter extends RecyclerView.Adapter<MvvmRecTrackAdapte
     public void onBindViewHolder(BindingHolder holder, final int position) {
         holder.mBinding.setListItem(trackObjects.get(position));
 
+        // TODO Use binding instead?
         holder.mBinding.trackLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -77,9 +78,9 @@ public class MvvmRecTrackAdapter extends RecyclerView.Adapter<MvvmRecTrackAdapte
     }
 
     public static class BindingHolder extends RecyclerView.ViewHolder {
-        private final TrackCardBinding mBinding;
+        private final TrackConstCardBinding mBinding;
 
-        public BindingHolder(TrackCardBinding binding) {
+        public BindingHolder(TrackConstCardBinding binding) {
             super(binding.trackLayout);
             mBinding = binding;
         }

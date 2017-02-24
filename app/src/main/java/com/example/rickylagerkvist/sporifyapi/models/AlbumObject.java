@@ -1,5 +1,7 @@
 package com.example.rickylagerkvist.sporifyapi.models;
 
+import com.google.auto.value.AutoValue;
+
 import java.util.List;
 
 /**
@@ -26,6 +28,7 @@ public class AlbumObject {
     public Object tracks; //
     public String type;
     public String uri;
+
 
     public String getAlbum_type() {
         return album_type;

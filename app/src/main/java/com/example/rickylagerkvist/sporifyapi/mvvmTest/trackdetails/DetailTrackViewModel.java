@@ -1,4 +1,4 @@
-package com.example.rickylagerkvist.sporifyapi.trackdetails;
+package com.example.rickylagerkvist.sporifyapi.mvvmTest.trackdetails;
 
 import android.content.Context;
 import android.databinding.BaseObservable;
@@ -35,6 +35,5 @@ public class DetailTrackViewModel extends BaseObservable {
     @BindingAdapter({"image"})
     public static void loadCoverArt(ImageView view, String url){
         Glide.with(view.getContext()).load(url).into(view);
-
     }
 }

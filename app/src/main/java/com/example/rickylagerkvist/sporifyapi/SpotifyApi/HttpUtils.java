@@ -1,4 +1,4 @@
-package com.example.rickylagerkvist.sporifyapi.utils;
+package com.example.rickylagerkvist.sporifyapi.SpotifyApi;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;

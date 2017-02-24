@@ -12,8 +12,7 @@
         android:id="@+id/track_layout"
         android:padding="8dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content">
 
         <ImageView
             app:image="@{listItem.getSmallCoverArt}"

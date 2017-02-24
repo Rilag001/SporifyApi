@@ -1,4 +1,4 @@
-package com.example.rickylagerkvist.sporifyapi.searchTracks;
+package com.example.rickylagerkvist.sporifyapi.mvpTest;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
@@ -10,19 +10,20 @@ import android.os.Bundle;
 import android.widget.Toast;
 
 import com.example.rickylagerkvist.sporifyapi.R;
+import com.example.rickylagerkvist.sporifyapi.mvpTest.mvpSearchTrack.MvpSearchTrackFragment;
+import com.example.rickylagerkvist.sporifyapi.mvvmTest.searchTracks.SearchTrackListFragment;
 
-
-public class MainActivity extends AppCompatActivity {
+public class MvpMainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_mvp_main);
 
-        SearchTrackListFragment alarmSettingFragment = new SearchTrackListFragment();
+        MvpSearchTrackFragment alarmSettingFragment = new MvpSearchTrackFragment();
         FragmentManager manager = getSupportFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();
-        transaction.replace(R.id.activity_main, alarmSettingFragment);
+        transaction.replace(R.id.activity_mvp_main, alarmSettingFragment);
         transaction.commit();
 
         if (!isDataConnectionAvailable(this)) {
@@ -36,5 +37,4 @@ public class MainActivity extends AppCompatActivity {
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnectedOrConnecting();
     }
-
 }
