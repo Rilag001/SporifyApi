@@ -31,7 +31,7 @@ public class MvvmRecTrackAdapter extends RecyclerView.Adapter<MvvmRecTrackAdapte
     private List<Track> mTracks;
     private Context mContext;
 
-    public MvvmRecTrackAdapter(List<Track> trackObjects, Context context) {
+    MvvmRecTrackAdapter(List<Track> trackObjects, Context context) {
         this.mTracks = trackObjects;
         this.mContext = context;
     }
@@ -39,7 +39,7 @@ public class MvvmRecTrackAdapter extends RecyclerView.Adapter<MvvmRecTrackAdapte
     @Override
     public BindingHolder onCreateViewHolder(@NonNull final ViewGroup parent, int viewType) {
         TrackConstCardBinding binding = DataBindingUtil.inflate(
-                LayoutInflater.from(mContext),
+                LayoutInflater.from(parent.getContext()),
                 R.layout.track_const_card, parent, false);
 
         return new BindingHolder(binding);
@@ -61,7 +61,7 @@ public class MvvmRecTrackAdapter extends RecyclerView.Adapter<MvvmRecTrackAdapte
                 String trackObjectJson = gson.toJson(trackObject);
 
                 Bundle bundle = new Bundle();
-                bundle.putString("track", trackObjectJson); // Put anything what you want
+                bundle.putString("track", trackObjectJson);
 
                 TrackDetailFragment fragment = TrackDetailFragment.newInstance();
                 fragment.setArguments(bundle);
@@ -81,16 +81,16 @@ public class MvvmRecTrackAdapter extends RecyclerView.Adapter<MvvmRecTrackAdapte
         return mTracks.size();
     }
 
-    public class BindingHolder extends RecyclerView.ViewHolder {
+    class BindingHolder extends RecyclerView.ViewHolder {
         private final TrackConstCardBinding mBinding;
 
-        public BindingHolder(TrackConstCardBinding binding) {
+        BindingHolder(@NonNull TrackConstCardBinding binding) {
             super(binding.trackLayout);
             mBinding = binding;
         }
     }
 
-    public void update(List<Track> modelList){
+    void update(List<Track> modelList){
         mTracks.clear();
         mTracks.addAll(modelList);
         notifyDataSetChanged();

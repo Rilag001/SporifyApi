@@ -17,7 +17,7 @@ import com.example.rickylagerkvist.sporifyapi.mvvmTest.searchTracks.SearchTrackL
 public class MvvmMainActivity extends AppCompatActivity {
 
     @Override
-    protected void onCreate(@NonNull Bundle savedInstanceState) {
+    protected void onCreate(@NonNull final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 

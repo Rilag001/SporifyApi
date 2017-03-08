@@ -3,6 +3,7 @@ package com.example.rickylagerkvist.sporifyapi.mvvmTest.searchTracks;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -51,7 +52,7 @@ public class SearchTrackListFragment extends Fragment implements SearchTrackView
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+                             @NonNull final Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView =  inflater.inflate(R.layout.fragment_search_track_list, container, false);
 

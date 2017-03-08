@@ -1,6 +1,7 @@
 package com.example.rickylagerkvist.sporifyapi.mvvmTest.trackdetails;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,7 +32,7 @@ public class TrackDetailFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+                             @NonNull final Bundle savedInstanceState) {
 
         Bundle bundle = this.getArguments();
 

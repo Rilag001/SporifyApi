@@ -2,6 +2,7 @@ package com.example.rickylagerkvist.sporifyapi.mvvmTest.searchTracks;
 
 import android.app.Activity;
 import android.databinding.BaseObservable;
+import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -94,9 +95,9 @@ public class SearchTrackViewModel extends BaseObservable {
         mView.getSwipeRefreshLayout().setRefreshing(false);
     }
 
-    private void searchTrack(String searchText) throws JSONException {
+    private void searchTrack(@NonNull final String searchText) throws JSONException {
 
-        String newSearchText = searchText.replaceAll(" ", "+");
+        final String newSearchText = searchText.replaceAll(" ", "+");
 
         HttpUtils.get(HttpUtils.searchTrack.replace("{search}", newSearchText), null, new JsonHttpResponseHandler(){
 
