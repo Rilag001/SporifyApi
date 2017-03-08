@@ -4,10 +4,11 @@ import android.content.Context;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 import android.databinding.BindingAdapter;
+import android.support.annotation.NonNull;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
-import com.example.rickylagerkvist.sporifyapi.models.TrackObject;
+import com.example.rickylagerkvist.sporifyapi.models.Track;
 
 /**
  * Created by rickylagerkvist on 2017-02-20.
@@ -15,21 +16,19 @@ import com.example.rickylagerkvist.sporifyapi.models.TrackObject;
 
 public class DetailTrackViewModel extends BaseObservable {
 
-    private TrackObject track;
-    private Context context;
+    private Track track;
 
-    public DetailTrackViewModel(TrackObject track, Context context) {
+    public DetailTrackViewModel(@NonNull final Track track) {
         this.track = track;
-        this.context = context;
     }
 
     @Bindable
     public String getTitle(){
-        return track.name;
+        return track.getName();
     }
 
     public String getImageUrl() {
-        return track.album.images.get(0).getUrl();
+        return track.getAlbum().getImages().get(0).getUrl();
     }
 
     @BindingAdapter({"image"})

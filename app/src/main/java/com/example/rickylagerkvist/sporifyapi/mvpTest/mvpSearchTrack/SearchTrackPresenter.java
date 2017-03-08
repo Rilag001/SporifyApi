@@ -1,15 +1,11 @@
 package com.example.rickylagerkvist.sporifyapi.mvpTest.mvpSearchTrack;
 
-import android.app.Activity;
 import android.util.Log;
-import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 
 import com.alibaba.fastjson.JSON;
-import com.example.rickylagerkvist.sporifyapi.SpotifyApi.APIUrlPaths;
-import com.example.rickylagerkvist.sporifyapi.SpotifyApi.HttpUtils;
+import com.example.rickylagerkvist.sporifyapi.ApiSpotify.HttpUtils;
+import com.example.rickylagerkvist.sporifyapi.models.Track;
 import com.example.rickylagerkvist.sporifyapi.models.TrackList;
-import com.example.rickylagerkvist.sporifyapi.models.TrackObject;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.json.JSONArray;
@@ -34,9 +30,9 @@ public class SearchTrackPresenter {
 
     public void searchTrack(String searchText) throws JSONException {
 
-        String newSearchText = searchText.replaceAll(" ", "+");
+        String newSearchText = HttpUtils.searchTrack.replace("{search}", searchText.replace(" ", "+"));
 
-        HttpUtils.get(APIUrlPaths.searchTrack.replace("{search}", newSearchText), null, new JsonHttpResponseHandler(){
+        HttpUtils.get(newSearchText, null, new JsonHttpResponseHandler(){
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
@@ -44,7 +40,7 @@ public class SearchTrackPresenter {
 
                 TrackList tacksList = JSON.parseObject(response.toString(), TrackList.class);
 
-                List<TrackObject> tracks = tacksList.tracks.items;
+                List<Track> tracks = tacksList.getTracks().getItems();
                 view.UpdateList(tracks);
                 view.toggleNoTrackFoundLayout(tracks.isEmpty());
             }
@@ -57,7 +53,7 @@ public class SearchTrackPresenter {
     }
 
     public interface View {
-        void UpdateList(List<TrackObject> list);
+        void UpdateList(List<Track> list);
         void toggleNoTrackFoundLayout(boolean isTracksEmpty);
     }
 

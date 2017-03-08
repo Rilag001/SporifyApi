@@ -1,7 +1,9 @@
 package com.example.rickylagerkvist.sporifyapi.mvvmTest.searchTracks;
 
 
+import android.app.Activity;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -9,38 +11,42 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.rickylagerkvist.sporifyapi.R;
 import com.example.rickylagerkvist.sporifyapi.databinding.FragmentSearchTrackListBinding;
-import com.example.rickylagerkvist.sporifyapi.models.TrackObject;
+import com.example.rickylagerkvist.sporifyapi.models.Track;
 
 import java.util.ArrayList;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
+import java.util.List;
 
 
-public class SearchTrackListFragment extends Fragment {
+public class SearchTrackListFragment extends Fragment implements SearchTrackViewModel.View {
 
-    // views
+    //region members
     EditText mSearchEditText;
     Button mSearchButton;
-    RelativeLayout mMainLayout;
+    FrameLayout mMainLayout;
     RecyclerView mRecyclerView;
-    LinearLayout mNoTrackFoundLayout;
+    TextView mNoTrackFoundLayout;
     SwipeRefreshLayout mSwipeRefreshLayout;
-
-    // list
-    ArrayList<TrackObject> mTrackObjects = new ArrayList<>();
+    ArrayList<Track> mTrackObjects;
     MvvmRecTrackAdapter mTrackResCardAdapter;
-
+    //endregion
 
     public SearchTrackListFragment() {
         // Required empty public constructor
+    }
+
+    public static SearchTrackListFragment newInstance()
+    {
+        return new SearchTrackListFragment();
     }
 
     @Override
@@ -49,13 +55,13 @@ public class SearchTrackListFragment extends Fragment {
         // Inflate the layout for this fragment
         View rootView =  inflater.inflate(R.layout.fragment_search_track_list, container, false);
 
+        mTrackObjects = new ArrayList<>();
 
-        // views
         mSearchEditText = (EditText) rootView.findViewById(R.id.searchEditText);
-        mRecyclerView = (RecyclerView) rootView.findViewById(R.id.trackRecyclerView);
+        mRecyclerView = (RecyclerView) rootView.findViewById(R.id.rv_trackRecyclerView);
         mSearchButton = (Button) rootView.findViewById(R.id.searchButton);
-        mMainLayout = (RelativeLayout) rootView.findViewById(R.id.activity_main);
-        mNoTrackFoundLayout = (LinearLayout) rootView.findViewById(R.id.no_internet_layout);
+        mMainLayout = (FrameLayout) rootView.findViewById(R.id.activity_main);
+        mNoTrackFoundLayout = (TextView) rootView.findViewById(R.id.ll_no_internet_layout);
         mSwipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipeRefreshLayout);
 
         // RecyclerAdapter
@@ -66,9 +72,48 @@ public class SearchTrackListFragment extends Fragment {
 
         // set ViewModel
         FragmentSearchTrackListBinding.bind(rootView)
-                .setViewModel(new SearchTrackViewModel(mTrackObjects, getContext(), mSearchEditText, mMainLayout,
-                        mSwipeRefreshLayout, mNoTrackFoundLayout, mTrackResCardAdapter));
+                .setViewModel(new SearchTrackViewModel(mTrackObjects, this));
 
         return rootView;
     }
+
+    public String getSearchText(){
+        return mSearchEditText.getText().toString();
+    }
+
+    public SwipeRefreshLayout getSwipeRefreshLayout(){
+        return mSwipeRefreshLayout;
+    }
+
+    public EditText getSearchEditText() {
+        return mSearchEditText;
+    }
+
+    public void showToast(String message){
+        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+    }
+
+    public void showSnackBarSearchIsEmpty(){
+        Snackbar snackbar = Snackbar.make(mMainLayout, "Search is empty!", Snackbar.LENGTH_LONG);
+        snackbar.show();
+    }
+
+    @Override
+    public void hideSoftInput() {
+
+        InputMethodManager imm = (InputMethodManager) getContext().getSystemService(
+                Activity.INPUT_METHOD_SERVICE);
+                imm.toggleSoftInput(InputMethodManager.RESULT_HIDDEN, 0);
+    }
+
+    @Override
+    public TextView getNoTrackFountLayout() {
+        return mNoTrackFoundLayout;
+    }
+
+    @Override
+    public void updateTracks(List<Track> modelList) {
+        mTrackResCardAdapter.update(modelList);
+    }
+
 }

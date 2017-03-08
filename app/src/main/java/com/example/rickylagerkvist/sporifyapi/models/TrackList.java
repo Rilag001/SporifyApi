@@ -6,13 +6,14 @@ package com.example.rickylagerkvist.sporifyapi.models;
 
 public class TrackList {
 
-    public TracksObject tracks;
+    public Tracks tracks;
 
-    public TracksObject getTracks() {
+    public void setTracks(Tracks tracks) {
+        this.tracks = tracks;
+    }
+
+    public Tracks getTracks() {
         return tracks;
     }
 
-    public void setTracks(TracksObject tracks) {
-        this.tracks = tracks;
-    }
 }

@@ -6,7 +6,8 @@
     <ImageView
         android:id="@+id/mvp_imageUrl"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/album_coverart" />
 
     <TextView
         android:layout_below="@id/mvp_imageUrl"

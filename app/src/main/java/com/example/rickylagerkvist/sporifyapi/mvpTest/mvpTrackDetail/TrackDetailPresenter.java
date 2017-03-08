@@ -1,9 +1,6 @@
 package com.example.rickylagerkvist.sporifyapi.mvpTest.mvpTrackDetail;
 
-import android.view.View;
-
-import com.example.rickylagerkvist.sporifyapi.models.TrackObject;
-import com.example.rickylagerkvist.sporifyapi.mvpTest.mvpSearchTrack.SearchTrackPresenter;
+import com.example.rickylagerkvist.sporifyapi.models.Track;
 
 /**
  * Created by rickylagerkvist on 2017-02-24.
@@ -12,14 +9,14 @@ import com.example.rickylagerkvist.sporifyapi.mvpTest.mvpSearchTrack.SearchTrack
 public class TrackDetailPresenter {
 
     private View view;
-    TrackObject trackObject;
+    Track trackObject;
 
-    public TrackDetailPresenter(View view, TrackObject trackObject) {
+    public TrackDetailPresenter(View view, Track trackObject) {
         this.view = view;
         this.trackObject = trackObject;
 
-        view.setCoverArt(trackObject.album.images.get(0).url);
-        view.setTrackName(trackObject.name);
+        view.setCoverArt(trackObject.getAlbum().getImages().get(0).getUrl());
+        view.setTrackName(trackObject.getName());
     }
 
     public interface View {

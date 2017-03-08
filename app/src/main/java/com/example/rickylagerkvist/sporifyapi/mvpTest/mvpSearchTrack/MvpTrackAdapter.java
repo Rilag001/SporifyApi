@@ -1,7 +1,6 @@
 package com.example.rickylagerkvist.sporifyapi.mvpTest.mvpSearchTrack;
 
 import android.content.Context;
-import android.media.Image;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.FragmentActivity;
@@ -15,10 +14,8 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.rickylagerkvist.sporifyapi.R;
-import com.example.rickylagerkvist.sporifyapi.models.TrackObject;
+import com.example.rickylagerkvist.sporifyapi.models.Track;
 import com.example.rickylagerkvist.sporifyapi.mvpTest.mvpTrackDetail.MvpTrackDetailFragment;
-import com.example.rickylagerkvist.sporifyapi.mvvmTest.searchTracks.MvvmRecTrackAdapter;
-import com.example.rickylagerkvist.sporifyapi.mvvmTest.trackdetails.TrackDetailFragment;
 import com.google.gson.Gson;
 
 import java.util.List;
@@ -32,15 +29,15 @@ import butterknife.ButterKnife;
 
 public class MvpTrackAdapter extends RecyclerView.Adapter<MvpTrackAdapter.MyViewHolder> {
 
-    private List<TrackObject> trackObjects;
+    private List<Track> trackObjects;
     private Context mContext;
 
-    public MvpTrackAdapter(List<TrackObject> trackObjects, Context mContext) {
+    MvpTrackAdapter(List<Track> trackObjects, Context mContext) {
         this.trackObjects = trackObjects;
         this.mContext = mContext;
     }
 
-    public class MyViewHolder extends RecyclerView.ViewHolder{
+    class MyViewHolder extends RecyclerView.ViewHolder{
 
         @BindView(R.id.mvp_track_card_imageView) ImageView coverArt;
         @BindView(R.id.mvp_trackTextView) TextView trackText;
@@ -49,7 +46,7 @@ public class MvpTrackAdapter extends RecyclerView.Adapter<MvpTrackAdapter.MyView
         @BindView(R.id.mvp_track_layout) ConstraintLayout trackLayout;
 
 
-        public MyViewHolder(View itemView) {
+        MyViewHolder(View itemView) {
             super(itemView);
 
             ButterKnife.bind(this, itemView);
@@ -66,16 +63,16 @@ public class MvpTrackAdapter extends RecyclerView.Adapter<MvpTrackAdapter.MyView
     @Override
     public void onBindViewHolder(MvpTrackAdapter.MyViewHolder holder, int position) {
 
-        final TrackObject trackObject = trackObjects.get(position);
+        final Track trackObject = trackObjects.get(position);
 
         // TrackText
-        holder.trackText.setText(trackObject.name);
+        holder.trackText.setText(trackObject.getName());
 
         // ArtistText
-        holder.artistText.setText(trackObject.getJoinTrack());
+        holder.artistText.setText(trackObject.getAllArtistAsJoinedString());
 
         // AlbumText
-        holder.albumText.setText(trackObject.album.name);
+        holder.albumText.setText(trackObject.getAlbum().getName());
 
         // CoverArt
         Glide.with(mContext).load(trackObject.getSmallCoverArt()).into(holder.coverArt);
@@ -91,18 +88,17 @@ public class MvpTrackAdapter extends RecyclerView.Adapter<MvpTrackAdapter.MyView
                 Bundle bundle = new Bundle();
                 bundle.putString("track", trackObjectJson); // Put anything what you want
 
-                MvpTrackDetailFragment fragment2 = new MvpTrackDetailFragment();
-                fragment2.setArguments(bundle);
+                MvpTrackDetailFragment fragment = MvpTrackDetailFragment.newInstance();
+                fragment.setArguments(bundle);
 
                 FragmentManager fragmentManager = ((FragmentActivity)mContext).getSupportFragmentManager();
                 fragmentManager
                         .beginTransaction()
-                        .replace(R.id.activity_mvp_main, fragment2)
+                        .replace(R.id.activity_mvp_main, fragment)
                         .addToBackStack(null)
                         .commit();
             }
         });
-
     }
 
     @Override
@@ -110,9 +106,9 @@ public class MvpTrackAdapter extends RecyclerView.Adapter<MvpTrackAdapter.MyView
         return trackObjects.size();
     }
 
-    public void update(List<TrackObject> modelList){
+    public void update(List<Track> modelList){
         trackObjects.clear();
-        for (TrackObject model: modelList) {
+        for (Track model: modelList) {
             trackObjects.add(model);
         }
         notifyDataSetChanged();

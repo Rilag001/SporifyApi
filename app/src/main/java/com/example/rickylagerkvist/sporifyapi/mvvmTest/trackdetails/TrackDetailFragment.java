@@ -8,7 +8,8 @@ import android.view.ViewGroup;
 
 import com.example.rickylagerkvist.sporifyapi.R;
 import com.example.rickylagerkvist.sporifyapi.databinding.FragmentTrackDetailBinding;
-import com.example.rickylagerkvist.sporifyapi.models.TrackObject;
+import com.example.rickylagerkvist.sporifyapi.models.Track;
+import com.example.rickylagerkvist.sporifyapi.mvvmTest.searchTracks.SearchTrackListFragment;
 import com.google.gson.Gson;
 
 
@@ -17,10 +18,15 @@ import com.google.gson.Gson;
  */
 public class TrackDetailFragment extends Fragment {
 
-    TrackObject track;
+    Track track;
 
     public TrackDetailFragment() {
         // Required empty public constructor
+    }
+
+    public static TrackDetailFragment newInstance()
+    {
+        return new TrackDetailFragment();
     }
 
     @Override
@@ -32,12 +38,12 @@ public class TrackDetailFragment extends Fragment {
         if(bundle != null) {
             String trackString = bundle.getString("track");
             Gson gson = new Gson();
-            track = gson.fromJson(trackString, TrackObject.class);
+            track = gson.fromJson(trackString, Track.class);
         }
 
         final View layout = inflater.inflate(R.layout.fragment_track_detail, container, false);
         FragmentTrackDetailBinding.bind(layout)
-                .setViewModel(new DetailTrackViewModel(track, getContext()));
+                .setViewModel(new DetailTrackViewModel(track));
         return layout;
     }
 

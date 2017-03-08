@@ -7,8 +7,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,7 +19,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.rickylagerkvist.sporifyapi.R;
-import com.example.rickylagerkvist.sporifyapi.models.TrackObject;
+import com.example.rickylagerkvist.sporifyapi.models.Track;
+import com.example.rickylagerkvist.sporifyapi.mvvmTest.searchTracks.SearchTrackListFragment;
 
 import org.json.JSONException;
 
@@ -30,7 +29,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -40,15 +38,20 @@ public class MvpSearchTrackFragment extends Fragment implements SearchTrackPrese
     private SearchTrackPresenter searchTrackPresenter;
     @BindView(R.id.mvpTrackRecyclerView) RecyclerView recyclerView;
     private MvpTrackAdapter mvpTrackAdapter;
-    private List<TrackObject> trackObjects = new ArrayList<>();
+    private List<Track> trackObjects = new ArrayList<>();
 
     @BindView(R.id.mvpSearchEditText) EditText searchEditText;
     @BindView(R.id.mvpSearchButton) Button searchButton;
-    @BindView(R.id.mvp_no_internet_layout) LinearLayout noTrackFoundLayout;
+    @BindView(R.id.mvp_no_internet_layout) TextView noTrackFoundLayout;
     @BindView(R.id.mvpSwipeRefreshLayout) SwipeRefreshLayout swipeRefreshLayout;
 
     public MvpSearchTrackFragment() {
         // Required empty public constructor
+    }
+
+    public static MvpSearchTrackFragment newInstance()
+    {
+        return new MvpSearchTrackFragment();
     }
 
     @Override
@@ -117,7 +120,7 @@ public class MvpSearchTrackFragment extends Fragment implements SearchTrackPrese
         imm.toggleSoftInput(InputMethodManager.RESULT_HIDDEN, 0);
     }
 
-    public void UpdateList(List<TrackObject> list){
+    public void UpdateList(List<Track> list){
         mvpTrackAdapter.update(list);
     }
 

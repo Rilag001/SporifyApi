@@ -34,27 +34,15 @@
 
     </LinearLayout>
 
-    <LinearLayout
+    <TextView
         android:layout_below="@id/mvpSearchStack"
         android:id="@+id/mvp_no_internet_layout"
         android:visibility="gone"
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <ImageView
-            android:layout_gravity="center"
-            android:src="@drawable/ic_search_black_24dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            android:layout_gravity="center"
-            android:text="@string/no_track_found"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-    </LinearLayout>
+        android:layout_gravity="center"
+        android:text="@string/no_track_found"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
+    </TextView>
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/mvpSwipeRefreshLayout"

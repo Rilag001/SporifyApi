@@ -6,13 +6,13 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.rickylagerkvist.sporifyapi.R;
-import com.example.rickylagerkvist.sporifyapi.models.TrackObject;
+import com.example.rickylagerkvist.sporifyapi.models.Track;
+import com.example.rickylagerkvist.sporifyapi.mvpTest.mvpSearchTrack.MvpSearchTrackFragment;
 import com.google.gson.Gson;
 
 import butterknife.BindView;
@@ -23,13 +23,18 @@ import butterknife.ButterKnife;
  */
 public class MvpTrackDetailFragment extends Fragment implements TrackDetailPresenter.View {
 
-    TrackObject track;
+    Track track;
     TrackDetailPresenter presenter;
     @BindView(R.id.mvp_imageUrl) ImageView coverArtImageView;
     @BindView(R.id.mvp_track_name_text) TextView trackNameTextView;
 
     public MvpTrackDetailFragment() {
         // Required empty public constructor
+    }
+
+    public static MvpTrackDetailFragment newInstance()
+    {
+        return new MvpTrackDetailFragment();
     }
 
     @Override
@@ -45,7 +50,7 @@ public class MvpTrackDetailFragment extends Fragment implements TrackDetailPrese
         if(bundle != null) {
             String trackString = bundle.getString("track");
             Gson gson = new Gson();
-            track = gson.fromJson(trackString, TrackObject.class);
+            track = gson.fromJson(trackString, Track.class);
         }
 
         presenter = new TrackDetailPresenter(this, track);

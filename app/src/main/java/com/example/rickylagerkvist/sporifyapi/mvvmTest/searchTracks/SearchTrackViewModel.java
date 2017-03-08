@@ -1,9 +1,7 @@
 package com.example.rickylagerkvist.sporifyapi.mvvmTest.searchTracks;
 
 import android.app.Activity;
-import android.content.Context;
 import android.databinding.BaseObservable;
-import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -12,15 +10,12 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
+import com.example.rickylagerkvist.sporifyapi.models.Track;
 import com.example.rickylagerkvist.sporifyapi.models.TrackList;
-import com.example.rickylagerkvist.sporifyapi.models.TrackObject;
-import com.example.rickylagerkvist.sporifyapi.SpotifyApi.APIUrlPaths;
-import com.example.rickylagerkvist.sporifyapi.SpotifyApi.HttpUtils;
+import com.example.rickylagerkvist.sporifyapi.ApiSpotify.HttpUtils;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.json.JSONArray;
@@ -29,7 +24,6 @@ import org.json.JSONObject;
 
 import java.util.List;
 
-import butterknife.BindView;
 import cz.msebera.android.httpclient.Header;
 
 /**
@@ -38,27 +32,15 @@ import cz.msebera.android.httpclient.Header;
 
 public class SearchTrackViewModel extends BaseObservable {
 
-    private List<TrackObject> mTracks;
-    private Context context;
-    private EditText mSearchEditText;
-    private RelativeLayout mMainLayout;
-    private SwipeRefreshLayout mSwipeRefreshLayout;
-    private LinearLayout mNoTrackFoundLayout;
-    private MvvmRecTrackAdapter mTrackResCardAdapter;
+    private List<Track> mTracks;
+    private View mView;
 
-    public SearchTrackViewModel(List<TrackObject> tracks, Context context, EditText mSearchEditText,
-                                RelativeLayout mMainLayout, final SwipeRefreshLayout mSwipeRefreshLayout,
-                                LinearLayout mNoTrackFoundLayout, MvvmRecTrackAdapter mTrackResCardAdapter) {
+    SearchTrackViewModel(List<Track> tracks, View view) {
         this.mTracks = tracks;
-        this.context = context;
-        this.mSearchEditText = mSearchEditText;
-        this.mMainLayout = mMainLayout;
-        this.mSwipeRefreshLayout = mSwipeRefreshLayout;
-        this.mNoTrackFoundLayout = mNoTrackFoundLayout;
-        this.mTrackResCardAdapter = mTrackResCardAdapter;
+        this.mView = view;
 
         // refresh layout
-        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+        view.getSwipeRefreshLayout().setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 searchTracks();
@@ -66,7 +48,7 @@ public class SearchTrackViewModel extends BaseObservable {
         });
 
         // IME_ACTION_DONE
-        mSearchEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        view.getSearchEditText().setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
@@ -80,31 +62,28 @@ public class SearchTrackViewModel extends BaseObservable {
         });
     }
 
-
-    public View.OnClickListener onSearchTrack() {
-        return new View.OnClickListener() {
+    public android.view.View.OnClickListener onSearchTrack() {
+        return new android.view.View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(android.view.View v) {
                 searchTracks();
             }
         };
     }
 
     // search for mTracks
-    public void searchTracks()  {
+    private void searchTracks()  {
 
-        String searchString = mSearchEditText.getText().toString();
+        String searchString = mView.getSearchText();
 
         if(!searchString.isEmpty()){
             try {
                 searchTrack(searchString);
             } catch (Exception e) {
-                Toast.makeText(context, e.toString(), Toast.LENGTH_SHORT).show();
+                mView.showToast(e.toString());
             }
         } else {
-
-            Snackbar snackbar = Snackbar.make(mMainLayout, "Search is empty!", Snackbar.LENGTH_LONG);
-            snackbar.show();
+            mView.showSnackBarSearchIsEmpty();
         }
 
         // Load complete
@@ -112,14 +91,14 @@ public class SearchTrackViewModel extends BaseObservable {
     }
 
     private void onItemsLoadComplete() {
-        mSwipeRefreshLayout.setRefreshing(false);
+        mView.getSwipeRefreshLayout().setRefreshing(false);
     }
 
-    public void searchTrack(String searchText) throws JSONException {
+    private void searchTrack(String searchText) throws JSONException {
 
         String newSearchText = searchText.replaceAll(" ", "+");
 
-        HttpUtils.get(APIUrlPaths.searchTrack.replace("{search}", newSearchText), null, new JsonHttpResponseHandler(){
+        HttpUtils.get(HttpUtils.searchTrack.replace("{search}", newSearchText), null, new JsonHttpResponseHandler(){
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
@@ -127,14 +106,14 @@ public class SearchTrackViewModel extends BaseObservable {
 
                 TrackList tacksList = JSON.parseObject(response.toString(), TrackList.class);
 
-                mTracks = tacksList.tracks.items;
-                mTrackResCardAdapter.update(mTracks);
+                mTracks = tacksList.tracks.getItems();
+                mView.updateTracks(mTracks);
 
                 // if list is empty show mNoTrackFoundLayout
                 if(mTracks.isEmpty()){
-                    mNoTrackFoundLayout.setVisibility(View.VISIBLE);
+                    mView.getNoTrackFountLayout().setVisibility(android.view.View.VISIBLE);
                 } else {
-                    mNoTrackFoundLayout.setVisibility(View.GONE);
+                    mView.getNoTrackFountLayout().setVisibility(android.view.View.GONE);
                 }
             }
 
@@ -144,13 +123,17 @@ public class SearchTrackViewModel extends BaseObservable {
             }
         });
 
-        hideSoftInput();
+        mView.hideSoftInput();
     }
 
-    public void hideSoftInput(){
-        InputMethodManager imm = (InputMethodManager) context.getSystemService(
-                Activity.INPUT_METHOD_SERVICE);
-        imm.toggleSoftInput(InputMethodManager.RESULT_HIDDEN, 0);
-
+    public interface View {
+        String getSearchText();
+        SwipeRefreshLayout getSwipeRefreshLayout();
+        EditText getSearchEditText();
+        void showToast(String message);
+        void showSnackBarSearchIsEmpty();
+        void hideSoftInput();
+        TextView getNoTrackFountLayout();
+        void updateTracks(List<Track> modelList);
     }
 }

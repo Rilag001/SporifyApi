@@ -1,61 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
         <variable
             name="listItem"
-            type="com.example.rickylagerkvist.sporifyapi.models.TrackObject"/>
+            type="com.example.rickylagerkvist.sporifyapi.models.Track"/>
     </data>
 
     <RelativeLayout
         android:id="@+id/track_layout"
         android:padding="8dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        tools:text="This view vill show cover art from album on the left. To the right of the cover art, it will vertically display the track name, album name and artists">
 
         <ImageView
             app:image="@{listItem.getSmallCoverArt}"
             android:layout_width="65dp"
             android:layout_height="65dp"
-            android:id="@+id/track_card_imageView"/>
+            android:id="@+id/iv_track_card"
+            android:contentDescription="@string/album_coverart" />
 
         <TextView
             android:text="@{listItem.name}"
-            android:layout_toRightOf="@id/track_card_imageView"
-            android:layout_toEndOf="@+id/track_card_imageView"
-            android:layout_marginLeft="10dp"
-            android:layout_marginStart="10dp"
+            android:layout_toRightOf="@id/iv_track_card"
+            android:layout_toEndOf="@+id/iv_track_card"
+            android:layout_marginLeft="@dimen/margin_ten"
+            android:layout_marginStart="@dimen/margin_ten"
             android:layout_width="wrap_content"
             android:maxLines="1"
             android:textAllCaps="true"
             android:textStyle="bold"
             android:layout_height="wrap_content"
-            android:id="@+id/trackTextView"/>
+            android:id="@+id/tv_track_name"/>
 
         <TextView
             android:maxLines="1"
             android:text="@{listItem.album.name}"
-            android:layout_toRightOf="@id/track_card_imageView"
-            android:layout_toEndOf="@+id/track_card_imageView"
-            android:layout_below="@id/trackTextView"
+            android:layout_toRightOf="@id/iv_track_card"
+            android:layout_toEndOf="@+id/iv_track_card"
+            android:layout_below="@id/tv_track_name"
             android:layout_width="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginStart="10dp"
+            android:layout_marginLeft="@dimen/margin_ten"
+            android:layout_marginStart="@dimen/margin_ten"
             android:layout_height="wrap_content"
-            android:id="@+id/albumTextView"/>
+            android:id="@+id/tv_album_name"/>
 
         <TextView
             android:maxLines="1"
-            android:text="@{listItem.getJoinTrack}"
-            android:layout_toRightOf="@id/track_card_imageView"
-            android:layout_toEndOf="@+id/track_card_imageView"
-            android:layout_below="@id/albumTextView"
+            android:text="@{listItem.getAllArtistAsJoinedString}"
+            android:layout_toRightOf="@id/iv_track_card"
+            android:layout_toEndOf="@+id/iv_track_card"
+            android:layout_below="@id/tv_album_name"
             android:layout_width="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginStart="10dp"
+            android:layout_marginLeft="@dimen/margin_ten"
+            android:layout_marginStart="@dimen/margin_ten"
             android:layout_height="wrap_content"
-            android:id="@+id/artistTextView"/>
+            android:id="@+id/tv_artists"/>
 
     </RelativeLayout>
 

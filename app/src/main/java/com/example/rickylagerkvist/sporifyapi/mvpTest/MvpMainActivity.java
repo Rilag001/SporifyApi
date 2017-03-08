@@ -20,7 +20,7 @@ public class MvpMainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mvp_main);
 
-        MvpSearchTrackFragment alarmSettingFragment = new MvpSearchTrackFragment();
+        MvpSearchTrackFragment alarmSettingFragment = MvpSearchTrackFragment.newInstance();
         FragmentManager manager = getSupportFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();
         transaction.replace(R.id.activity_mvp_main, alarmSettingFragment);

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.databinding.BindingAdapter;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,7 +16,7 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.example.rickylagerkvist.sporifyapi.R;
 import com.example.rickylagerkvist.sporifyapi.databinding.TrackConstCardBinding;
-import com.example.rickylagerkvist.sporifyapi.models.TrackObject;
+import com.example.rickylagerkvist.sporifyapi.models.Track;
 import com.example.rickylagerkvist.sporifyapi.mvvmTest.trackdetails.TrackDetailFragment;
 import com.google.gson.Gson;
 
@@ -27,16 +28,16 @@ import java.util.List;
 
 public class MvvmRecTrackAdapter extends RecyclerView.Adapter<MvvmRecTrackAdapter.BindingHolder> {
 
-    private List<TrackObject> trackObjects;
+    private List<Track> mTracks;
     private Context mContext;
 
-    public MvvmRecTrackAdapter(List<TrackObject> trackObjects, Context mContext) {
-        this.trackObjects = trackObjects;
-        this.mContext = mContext;
+    public MvvmRecTrackAdapter(List<Track> trackObjects, Context context) {
+        this.mTracks = trackObjects;
+        this.mContext = context;
     }
 
     @Override
-    public BindingHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public BindingHolder onCreateViewHolder(@NonNull final ViewGroup parent, int viewType) {
         TrackConstCardBinding binding = DataBindingUtil.inflate(
                 LayoutInflater.from(mContext),
                 R.layout.track_const_card, parent, false);
@@ -45,8 +46,11 @@ public class MvvmRecTrackAdapter extends RecyclerView.Adapter<MvvmRecTrackAdapte
     }
 
     @Override
-    public void onBindViewHolder(BindingHolder holder, final int position) {
-        holder.mBinding.setListItem(trackObjects.get(position));
+    public void onBindViewHolder(@NonNull final BindingHolder holder, int position) {
+
+        final Track trackObject = mTracks.get(position);
+
+        holder.mBinding.setListItem(trackObject);
 
         // TODO Use binding instead?
         holder.mBinding.trackLayout.setOnClickListener(new View.OnClickListener() {
@@ -54,18 +58,18 @@ public class MvvmRecTrackAdapter extends RecyclerView.Adapter<MvvmRecTrackAdapte
             public void onClick(View v) {
                 // put model as String extra
                 Gson gson = new Gson();
-                String trackObjectJson = gson.toJson(trackObjects.get(position));
+                String trackObjectJson = gson.toJson(trackObject);
 
                 Bundle bundle = new Bundle();
                 bundle.putString("track", trackObjectJson); // Put anything what you want
 
-                TrackDetailFragment fragment2 = new TrackDetailFragment();
-                fragment2.setArguments(bundle);
+                TrackDetailFragment fragment = TrackDetailFragment.newInstance();
+                fragment.setArguments(bundle);
 
                 FragmentManager fragmentManager = ((FragmentActivity)mContext).getSupportFragmentManager();
                 fragmentManager
                         .beginTransaction()
-                        .replace(R.id.activity_main, fragment2)
+                        .replace(R.id.activity_main, fragment)
                         .addToBackStack(null)
                         .commit();
             }
@@ -74,10 +78,10 @@ public class MvvmRecTrackAdapter extends RecyclerView.Adapter<MvvmRecTrackAdapte
 
     @Override
     public int getItemCount() {
-        return trackObjects.size();
+        return mTracks.size();
     }
 
-    public static class BindingHolder extends RecyclerView.ViewHolder {
+    public class BindingHolder extends RecyclerView.ViewHolder {
         private final TrackConstCardBinding mBinding;
 
         public BindingHolder(TrackConstCardBinding binding) {
@@ -86,11 +90,9 @@ public class MvvmRecTrackAdapter extends RecyclerView.Adapter<MvvmRecTrackAdapte
         }
     }
 
-    public void update(List<TrackObject> modelList){
-        trackObjects.clear();
-        for (TrackObject model: modelList) {
-            trackObjects.add(model);
-        }
+    public void update(List<Track> modelList){
+        mTracks.clear();
+        mTracks.addAll(modelList);
         notifyDataSetChanged();
     }
 
