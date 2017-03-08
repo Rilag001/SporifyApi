@@ -17,6 +17,7 @@ import com.bumptech.glide.Glide;
 import com.example.rickylagerkvist.sporifyapi.R;
 import com.example.rickylagerkvist.sporifyapi.databinding.TrackConstCardBinding;
 import com.example.rickylagerkvist.sporifyapi.models.Track;
+import com.example.rickylagerkvist.sporifyapi.mvvmTest.MvvmMainActivity;
 import com.example.rickylagerkvist.sporifyapi.mvvmTest.trackdetails.TrackDetailFragment;
 import com.google.gson.Gson;
 
@@ -29,11 +30,9 @@ import java.util.List;
 public class MvvmRecTrackAdapter extends RecyclerView.Adapter<MvvmRecTrackAdapter.BindingHolder> {
 
     private List<Track> mTracks;
-    private Context mContext;
 
-    MvvmRecTrackAdapter(List<Track> trackObjects, Context context) {
+    MvvmRecTrackAdapter(List<Track> trackObjects) {
         this.mTracks = trackObjects;
-        this.mContext = context;
     }
 
     @Override
@@ -56,6 +55,7 @@ public class MvvmRecTrackAdapter extends RecyclerView.Adapter<MvvmRecTrackAdapte
         holder.mBinding.trackLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 // put model as String extra
                 Gson gson = new Gson();
                 String trackObjectJson = gson.toJson(trackObject);
@@ -66,7 +66,7 @@ public class MvvmRecTrackAdapter extends RecyclerView.Adapter<MvvmRecTrackAdapte
                 TrackDetailFragment fragment = TrackDetailFragment.newInstance();
                 fragment.setArguments(bundle);
 
-                FragmentManager fragmentManager = ((FragmentActivity)mContext).getSupportFragmentManager();
+                FragmentManager fragmentManager = ((FragmentActivity)v.getContext()).getSupportFragmentManager();
                 fragmentManager
                         .beginTransaction()
                         .replace(R.id.activity_main, fragment)

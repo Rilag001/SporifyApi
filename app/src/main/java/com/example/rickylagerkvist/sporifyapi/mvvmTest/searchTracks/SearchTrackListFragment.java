@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -23,6 +25,8 @@ import android.widget.Toast;
 import com.example.rickylagerkvist.sporifyapi.R;
 import com.example.rickylagerkvist.sporifyapi.databinding.FragmentSearchTrackListBinding;
 import com.example.rickylagerkvist.sporifyapi.models.Track;
+import com.example.rickylagerkvist.sporifyapi.mvvmTest.trackdetails.TrackDetailFragment;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,7 +71,7 @@ public class SearchTrackListFragment extends Fragment implements SearchTrackView
 
         // RecyclerAdapter
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        mTrackResCardAdapter = new MvvmRecTrackAdapter(mTrackObjects, getContext());
+        mTrackResCardAdapter = new MvvmRecTrackAdapter(mTrackObjects);
         mRecyclerView.setLayoutManager(linearLayoutManager);
         mRecyclerView.setAdapter(mTrackResCardAdapter);
 
@@ -116,5 +120,7 @@ public class SearchTrackListFragment extends Fragment implements SearchTrackView
     public void updateTracks(List<Track> modelList) {
         mTrackResCardAdapter.update(modelList);
     }
+
+
 
 }

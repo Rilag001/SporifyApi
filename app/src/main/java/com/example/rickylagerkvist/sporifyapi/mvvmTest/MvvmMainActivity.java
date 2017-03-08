@@ -11,10 +11,14 @@ import android.os.Bundle;
 import android.widget.Toast;
 
 import com.example.rickylagerkvist.sporifyapi.R;
+import com.example.rickylagerkvist.sporifyapi.models.Track;
 import com.example.rickylagerkvist.sporifyapi.mvvmTest.searchTracks.SearchTrackListFragment;
+import com.example.rickylagerkvist.sporifyapi.mvvmTest.trackdetails.TrackDetailFragment;
+import com.google.gson.Gson;
 
 
 public class MvvmMainActivity extends AppCompatActivity {
+
 
     @Override
     protected void onCreate(@NonNull final Bundle savedInstanceState) {
