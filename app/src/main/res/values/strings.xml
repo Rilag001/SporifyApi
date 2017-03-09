@@ -8,4 +8,5 @@
     <string name="mvvm">MVVM</string>
     <string name="android_authority_guy">Android authority guy</string>
     <string name="album_coverart">Album coverart</string>
+    <string name="could_not_load_data">Could not load data</string>
 </resources>

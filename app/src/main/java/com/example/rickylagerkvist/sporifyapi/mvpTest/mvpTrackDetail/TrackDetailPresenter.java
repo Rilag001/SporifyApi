@@ -8,15 +8,15 @@ import com.example.rickylagerkvist.sporifyapi.models.Track;
 
 public class TrackDetailPresenter {
 
-    private View view;
-    Track trackObject;
+    private View mView;
+    private Track mTrack;
 
-    public TrackDetailPresenter(View view, Track trackObject) {
-        this.view = view;
-        this.trackObject = trackObject;
+    TrackDetailPresenter(View view, Track track) {
+        this.mView = view;
+        this.mTrack = track;
 
-        view.setCoverArt(trackObject.getAlbum().getImages().get(0).getUrl());
-        view.setTrackName(trackObject.getName());
+        view.setCoverArt(track.getAlbum().getImages().get(0).getUrl());
+        view.setTrackName(track.getName());
     }
 
     public interface View {

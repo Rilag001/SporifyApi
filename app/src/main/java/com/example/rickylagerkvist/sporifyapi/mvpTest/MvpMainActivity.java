@@ -26,14 +26,14 @@ public class MvpMainActivity extends AppCompatActivity {
         transaction.replace(R.id.activity_mvp_main, alarmSettingFragment);
         transaction.commit();
 
-        if (!isDataConnectionAvailable(this)) {
+        if (!isDataConnectionAvailable()) {
             Toast.makeText(this, "No internet connection", Toast.LENGTH_SHORT).show();
         }
     }
 
-    public static boolean isDataConnectionAvailable(Context context) {
+    public boolean isDataConnectionAvailable() {
         ConnectivityManager connectivityManager =
-                (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+                (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnectedOrConnecting();
     }

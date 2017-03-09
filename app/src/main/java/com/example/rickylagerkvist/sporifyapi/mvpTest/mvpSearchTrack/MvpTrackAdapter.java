@@ -1,6 +1,5 @@
 package com.example.rickylagerkvist.sporifyapi.mvpTest.mvpSearchTrack;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.FragmentActivity;
@@ -27,14 +26,12 @@ import butterknife.ButterKnife;
  * Created by rickylagerkvist on 2017-02-24.
  */
 
-public class MvpTrackAdapter extends RecyclerView.Adapter<MvpTrackAdapter.MyViewHolder> {
+class MvpTrackAdapter extends RecyclerView.Adapter<MvpTrackAdapter.MyViewHolder> {
 
-    private List<Track> trackObjects;
-    private Context mContext;
+    private List<Track> mTracks;
 
-    MvpTrackAdapter(List<Track> trackObjects, Context mContext) {
-        this.trackObjects = trackObjects;
-        this.mContext = mContext;
+    MvpTrackAdapter(List<Track> trackObjects) {
+        this.mTracks = trackObjects;
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder{
@@ -44,7 +41,6 @@ public class MvpTrackAdapter extends RecyclerView.Adapter<MvpTrackAdapter.MyView
         @BindView(R.id.mvp_albumTextView) TextView albumText;
         @BindView(R.id.mvp_artistTextView) TextView artistText;
         @BindView(R.id.mvp_track_layout) ConstraintLayout trackLayout;
-
 
         MyViewHolder(View itemView) {
             super(itemView);
@@ -63,19 +59,19 @@ public class MvpTrackAdapter extends RecyclerView.Adapter<MvpTrackAdapter.MyView
     @Override
     public void onBindViewHolder(MvpTrackAdapter.MyViewHolder holder, int position) {
 
-        final Track trackObject = trackObjects.get(position);
+        final Track track = mTracks.get(position);
 
         // TrackText
-        holder.trackText.setText(trackObject.getName());
+        holder.trackText.setText(track.getName());
 
         // ArtistText
-        holder.artistText.setText(trackObject.getAllArtistAsJoinedString());
+        holder.artistText.setText(track.getAllArtistAsJoinedString());
 
         // AlbumText
-        holder.albumText.setText(trackObject.getAlbum().getName());
+        holder.albumText.setText(track.getAlbum().getName());
 
         // CoverArt
-        Glide.with(mContext).load(trackObject.getSmallCoverArt()).into(holder.coverArt);
+        Glide.with(holder.coverArt.getContext()).load(track.getSmallCoverArt()).into(holder.coverArt);
 
         // open MvpTrackDetailFragment
         holder.trackLayout.setOnClickListener(new View.OnClickListener() {
@@ -83,15 +79,15 @@ public class MvpTrackAdapter extends RecyclerView.Adapter<MvpTrackAdapter.MyView
             public void onClick(View v) {
                 // put model as String extra
                 Gson gson = new Gson();
-                String trackObjectJson = gson.toJson(trackObject);
+                String trackJson = gson.toJson(track);
 
                 Bundle bundle = new Bundle();
-                bundle.putString("track", trackObjectJson); // Put anything what you want
+                bundle.putString("track", trackJson); // Put anything what you want
 
                 MvpTrackDetailFragment fragment = MvpTrackDetailFragment.newInstance();
                 fragment.setArguments(bundle);
 
-                FragmentManager fragmentManager = ((FragmentActivity)mContext).getSupportFragmentManager();
+                FragmentManager fragmentManager = ((FragmentActivity)v.getContext()).getSupportFragmentManager();
                 fragmentManager
                         .beginTransaction()
                         .replace(R.id.activity_mvp_main, fragment)
@@ -103,14 +99,12 @@ public class MvpTrackAdapter extends RecyclerView.Adapter<MvpTrackAdapter.MyView
 
     @Override
     public int getItemCount() {
-        return trackObjects.size();
+        return mTracks.size();
     }
 
-    public void update(List<Track> modelList){
-        trackObjects.clear();
-        for (Track model: modelList) {
-            trackObjects.add(model);
-        }
+    void update(List<Track> modelList){
+        mTracks.clear();
+        mTracks.addAll(modelList);
         notifyDataSetChanged();
     }
 }

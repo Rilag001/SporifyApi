@@ -20,43 +20,48 @@ import cz.msebera.android.httpclient.Header;
  * Created by rickylagerkvist on 2017-02-24.
  */
 
-public class SearchTrackPresenter {
+class SearchTrackPresenter {
 
     private View view;
 
-    public SearchTrackPresenter(View view) {
+    SearchTrackPresenter(View view) {
         this.view = view;
     }
 
-    public void searchTrack(String searchText) throws JSONException {
+    void searchTrack(String searchText) throws JSONException {
 
-        String newSearchText = HttpUtils.searchTrack.replace("{search}", searchText.replace(" ", "+"));
+        if(!view.searchEditText().isEmpty()){
 
-        HttpUtils.get(newSearchText, null, new JsonHttpResponseHandler(){
+            String newSearchText = HttpUtils.searchTrack.replace("{search}", searchText.replace(" ", "+"));
 
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                Log.d("asd", "---------------- this is response : " + response);
+            HttpUtils.get(newSearchText, null, new JsonHttpResponseHandler(){
 
-                TrackList tacksList = JSON.parseObject(response.toString(), TrackList.class);
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                    Log.d("asd", "---------------- this is response : " + response);
 
-                List<Track> tracks = tacksList.getTracks().getItems();
-                view.UpdateList(tracks);
-                view.toggleNoTrackFoundLayout(tracks.isEmpty());
-            }
+                    TrackList tacksList = JSON.parseObject(response.toString(), TrackList.class);
 
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONArray timeline) {
+                    List<Track> tracks = tacksList.getTracks().getItems();
+                    view.updateList(tracks);
+                    view.toggleNoTrackFoundLayout(tracks.isEmpty());
+                }
 
-            }
-        });
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, JSONArray timeline) {
+
+                }
+            });
+
+        } else {
+            view.showSnackBarSearchIsEmpty();
+        }
     }
 
     public interface View {
-        void UpdateList(List<Track> list);
+        void updateList(List<Track> list);
         void toggleNoTrackFoundLayout(boolean isTracksEmpty);
+        String searchEditText();
+        void showSnackBarSearchIsEmpty();
     }
-
-
-
 }
